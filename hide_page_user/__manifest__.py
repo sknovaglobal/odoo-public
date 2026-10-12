@@ -37,6 +37,11 @@ record rules, or server-side security controls.
             'hide_page_user/static/src/js/page_restriction.js',
         ],
     },
+    'images': [
+            'static/description/project_overview.png',
+            'static/description/banner.png',
+            'static/description/icon.png',
+        ],
     'installable': True,
     'application': False,
 }
