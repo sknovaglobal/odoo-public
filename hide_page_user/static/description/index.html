@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hide Pages for Users is an Odoo module for configuring form-tab visibility for selected users.">
+  <title>Hide Pages for Users | SkNovaGlobal</title>
+  <style>
+    :root {
+      --navy: #073d56;
+      --navy-dark: #092d43;
+      --teal: #078f8a;
+      --teal-dark: #075e62;
+      --text: #17364b;
+      --muted: #426273;
+      --line: #dce8eb;
+      --pale: #e9f8f7;
+      --panel: #f7fbfc;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; padding: 0; background: #f3f7f8; color: var(--text);
+      font-family: Arial, Helvetica, sans-serif; line-height: 1.65;
+    }
+    .page { max-width: 1120px; margin: 0 auto; background: #fff; overflow: hidden; }
+    .banner img { display: block; width: 100%; height: auto; border: 0; }
+    .brand-header {
+      display: flex; align-items: center; justify-content: space-between; gap: 20px;
+      padding: 22px 28px; background: #fff; border-bottom: 1px solid var(--line);
+    }
+    .brand-name { font-size: 25px; font-weight: 700; color: var(--navy); line-height: 1.2; }
+    .brand-tagline { font-size: 12px; letter-spacing: 1px; color: var(--teal); }
+    .brand-label { text-align: right; font-size: 13px; color: var(--muted); }
+    .intro { padding: 36px 30px; background: var(--pale); }
+    .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--teal); }
+    h1 { margin: 8px 0 12px; font-size: 32px; line-height: 1.2; color: var(--navy); }
+    h2 { margin: 0 0 18px; font-size: 24px; color: #087f7b; line-height: 1.3; }
+    h3 { margin: 0; font-size: 17px; color: var(--navy); line-height: 1.4; }
+    p { margin-top: 8px; }
+    .intro-copy { margin: 0; max-width: 850px; font-size: 16px; color: #31566a; }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .chip {
+      display: inline-block; padding: 8px 13px; background: #fff; border: 1px solid #c7e9e5;
+      border-radius: 18px; color: var(--teal-dark); font-size: 13px; font-weight: 700;
+    }
+    .section { padding: 32px 28px 12px; }
+    .feature-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .feature {
+      padding: 18px; background: var(--panel); border: 1px solid #e0ecef; border-radius: 10px;
+    }
+    .feature p { margin: 8px 0 0; font-size: 14px; color: var(--muted); }
+    .benefits {
+      margin: 16px 28px; padding: 24px; background: var(--navy); border-radius: 12px; color: #fff;
+    }
+    .benefits h2 { margin-bottom: 12px; color: #fff; font-size: 22px; }
+    .benefits ul { margin: 0; padding-left: 22px; font-size: 14px; color: #e6f5f5; }
+    .security-note {
+      margin: 24px 28px; padding: 20px 22px; background: #fff8e8;
+      border-left: 5px solid #e5a32b; border-radius: 8px;
+    }
+    .security-note h2 { margin-bottom: 8px; font-size: 18px; color: #80520a; }
+    .security-note p { margin: 0; font-size: 14px; color: #674f2a; }
+    .info { padding: 10px 28px 30px; }
+    .info-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .info-table td { padding: 10px; border-bottom: 1px solid #e2ecef; vertical-align: top; overflow-wrap: anywhere; }
+    .info-table td:first-child { width: 32%; font-weight: 700; }
+    .install { padding: 28px; background: #f7fbfc; border-top: 1px solid var(--line); }
+    .install h2 { margin-bottom: 12px; }
+    .install ol { margin: 0; padding-left: 22px; font-size: 14px; color: var(--muted); }
+    .support { padding: 28px; background: #eaf7f7; text-align: center; border-top: 1px solid #d4e9e9; }
+    .support-title { font-size: 22px; font-weight: 700; color: var(--navy); line-height: 1.35; }
+    .support p { max-width: 780px; margin: 10px auto 18px; font-size: 14px; color: var(--muted); }
+    .contact { font-size: 14px; color: var(--teal-dark); font-weight: 700; overflow-wrap: anywhere; }
+    .support-note { margin: 16px 0 0 !important; font-size: 12px !important; color: #69838d !important; }
+    footer { padding: 18px 28px; background: var(--navy-dark); color: #dcebed; text-align: center; font-size: 12px; }
+    .footer-name { font-size: 16px; font-weight: 700; color: #fff; }
+    .copyright { margin-top: 8px; color: #a8c3cc; }
+    @media (max-width: 640px) {
+      .brand-header { align-items: flex-start; flex-direction: column; padding: 20px; }
+      .brand-label { text-align: left; }
+      .intro { padding: 28px 20px; }
+      h1 { font-size: 28px; }
+      .section, .info { padding-left: 20px; padding-right: 20px; }
+      .feature-grid { grid-template-columns: 1fr; }
+      .benefits, .security-note { margin-left: 20px; margin-right: 20px; }
+      .info-table td { display: block; width: 100% !important; padding: 8px 10px; }
+      .info-table td:first-child { padding-bottom: 0; border-bottom: 0; }
+      .info-table td:last-child { padding-top: 2px; }
+      .support { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <!-- Keep banner.png in the same directory as this index.html file. -->
+    <div class="banner">
+      <img src="banner.png" alt="Hide Pages for Users by SkNovaGlobal">
+    </div>
+
+    <header class="brand-header">
+      <div>
+        <div class="brand-name">SkNovaGlobal</div>
+        <div class="brand-tagline">INNOVATE &nbsp;•&nbsp; BUILD &nbsp;•&nbsp; GROW</div>
+      </div>
+      <div class="brand-label">Odoo Module &nbsp;|&nbsp; Hide Pages for Users</div>
+    </header>
+
+    <section class="intro">
+      <div class="eyebrow">Access visibility made simpler</div>
+      <h1>Hide Pages for Users</h1>
+      <p class="intro-copy">
+        Keep the Odoo interface focused by configuring which form pages (tabs) are visible to selected users.
+        Tailor the interface to different responsibilities and business needs with centrally managed restrictions.
+      </p>
+      <div class="chips">
+        <span class="chip">✓ User-focused interface</span>
+        <span class="chip">✓ Configurable restrictions</span>
+        <span class="chip">✓ Backend integration</span>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="overview-heading">
+      <h2 id="overview-heading">Module Screenshots &amp; Overview</h2>
+      <p style="margin:-8px 0 16px;color:#426273;font-size:14px;">
+        See the page restriction configuration, the administrator view, and an example of the restricted-user form view.
+      </p>
+      <figure style="margin:0;">
+        <img src="project_overview.png"
+             alt="Hide Pages for Users: page restriction configuration, administrator tabs, restricted-user tabs, and module overview"
+             loading="lazy"
+             style="display:block;width:100%;height:auto;border:1px solid #dce8eb;border-radius:10px;">
+        <figcaption style="padding:8px 2px 0;color:#69838d;font-size:12px;">
+          Example interface for illustration. Actual appearance depends on your Odoo version and installed module.
+        </figcaption>
+      </figure>
+    </section>
+
+    <section class="section">
+      <h2>Key Features</h2>
+      <div class="feature-grid">
+        <article class="feature">
+          <h3>Page Visibility Management</h3>
+          <p>Configure which named notebook pages should be hidden from selected users in supported Odoo forms.</p>
+        </article>
+        <article class="feature">
+          <h3>User Access Configuration</h3>
+          <p>Associate page restrictions with user accounts to tailor the interface to their responsibilities.</p>
+        </article>
+        <article class="feature">
+          <h3>Administrator Controls</h3>
+          <p>Manage page restriction records from a dedicated backend configuration menu.</p>
+        </article>
+        <article class="feature">
+          <h3>Odoo Backend Integration</h3>
+          <p>Use Odoo backend assets and server-side configuration endpoints to supply page visibility settings to the interface.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="benefits">
+      <h2>Why use this module?</h2>
+      <ul>
+        <li>Help keep the interface relevant to each user's role.</li>
+        <li>Centralize page restriction configuration for administrators.</li>
+        <li>Support different visibility needs across teams.</li>
+        <li>Reduce unnecessary tabs and visual clutter for configured users.</li>
+      </ul>
+    </section>
+
+    <aside class="security-note">
+      <h2>Important Security Note</h2>
+      <p>
+        Hiding a page in the interface does not secure its underlying data or prevent direct URL, RPC, or API access.
+        For sensitive operations, configure and test appropriate server-side access rights, record rules, and model permissions.
+      </p>
+    </aside>
+
+    <section class="info">
+      <h2>Module Information</h2>
+      <table class="info-table">
+        <tr><td>Module Name</td><td>Hide Pages for Users</td></tr>
+        <tr><td>Technical Name</td><td>hide_page_user</td></tr>
+        <tr><td>Dependencies</td><td>base, web</td></tr>
+        <tr><td>Publisher</td><td>SkNovaGlobal</td></tr>
+        <tr><td>Supported Odoo Versions</td><td>Confirm compatibility against the versions tested with your module before publishing.</td></tr>
+        <tr><td>License / Version</td><td>Use the license and version declared in your module manifest.</td></tr>
+      </table>
+    </section>
+
+    <section class="install">
+      <h2>Installation &amp; Usage</h2>
+      <ol>
+        <li>Copy the module into an Odoo addons directory.</li>
+        <li>Restart the Odoo service and update the Apps list.</li>
+        <li>Install the module from the Apps menu.</li>
+        <li>Open the Page Restrictions configuration menu and create a restriction using the technical name of the target notebook page.</li>
+        <li>Assign the restriction to the intended users, then open the relevant form as a test user and verify the result.</li>
+      </ol>
+      <p style="margin:12px 0 0;font-size:12px;color:#69838d;">
+        The exact menu labels and configuration fields depend on the final implementation packaged with the module.
+      </p>
+    </section>
+
+    <section class="support">
+      <div class="support-title">Need Odoo customization or implementation support?</div>
+      <p>
+        SkNovaGlobal helps businesses streamline operations with Odoo implementation, customization,
+        integrations, and ongoing technical support.
+      </p>
+      <div class="contact">Website: <a href="https://sknovaglobal.com" style="color:inherit;">https://sknovaglobal.com</a></div>
+      <div class="contact">Email: <a href="mailto:info@sknovaglobal.com" style="color:inherit;">info@sknovaglobal.com</a></div>
+      <p class="support-note">Please verify that the website and email above are your official support contacts before publishing.</p>
+    </section>
+
+    <footer>
+      <div class="footer-name">SkNovaGlobal</div>
+      <div>Innovate • Build • Grow</div>
+      <div style="margin-top:8px;">Hide Pages for Users &nbsp;|&nbsp; Odoo Apps</div>
+      <div class="copyright">© SkNovaGlobal. All rights reserved.</div>
+    </footer>
+  </main>
+</body>
+</html>
