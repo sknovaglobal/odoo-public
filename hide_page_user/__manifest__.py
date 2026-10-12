@@ -1,4 +1,3 @@
-
 {
     'name': 'Hide Pages (tabs) for Users',
     'version': '1.0.0',
@@ -38,10 +37,11 @@ record rules, or server-side security controls.
         ],
     },
     'images': [
-            'static/description/project_overview.png',
-            'static/description/banner.png',
             'static/description/icon.png',
+            'static/description/banner.png',
+
         ],
     'installable': True,
     'application': False,
 }
+
